@@ -1,6 +1,4 @@
-public class Nomor1{
-    public static void main(String[] args){
-     import java.util.Scanner;
+ import java.util.Scanner;
 
 public class honorLembur {
     public static void main(String[] args) {
@@ -29,5 +27,5 @@ public class honorLembur {
         System.out.println("Honor lembur: " + honorLembur);
 
         scanner.close();
-
+}
 }
