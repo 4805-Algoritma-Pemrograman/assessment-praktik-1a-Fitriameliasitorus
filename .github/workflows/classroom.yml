@@ -1,0 +1,83 @@
+name: Autograding Tests
+'on':
+- push
+- repository_dispatch
+permissions:
+  checks: write
+  actions: read
+  contents: read
+jobs:
+  run-autograding-tests:
+    runs-on: ubuntu-latest
+    if: github.actor != 'github-classroom[bot]'
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+    - name: Lembur di bawah 16 jam
+      id: lembur-di-bawah-16-jam
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Lembur di bawah 16 jam
+        setup-command: javac Nomor1.java
+        command: java Nomor1
+        input: '10'
+        expected-output: '100000.0'
+        comparison-method: exact
+        timeout: 10
+        max-score: 10
+    - name: Lembur pas 16 jam
+      id: lembur-pas-16-jam
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Lembur pas 16 jam
+        setup-command: javac Nomor1.java
+        command: java Nomor1
+        input: '16'
+        expected-output: '160000.0'
+        comparison-method: exact
+        timeout: 10
+        max-score: 10
+    - name: Lembur di atas 16 jam
+      id: lembur-di-atas-16-jam
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Lembur di atas 16 jam
+        setup-command: javac Nomor1.java
+        command: java Nomor1
+        input: '20'
+        expected-output: '220000.0'
+        comparison-method: exact
+        timeout: 10
+        max-score: 20
+    - name: Beliau
+      id: beliau
+      uses: classroom-resources/autograding-io-grader@v1
+      with:
+        test-name: Beliau
+        setup-command: javac Nomor2.java
+        command: java Nomor2
+        input: |-
+          Beliau
+          4
+          Y
+          Kita
+          5
+          Y
+          Beliau
+          2
+          N
+        expected-output: |-
+          11
+          Beliau 78000
+        comparison-method: contains
+        timeout: 10
+        max-score: 50
+    - name: Autograding Reporter
+      uses: classroom-resources/autograding-grading-reporter@v1
+      env:
+        LEMBUR-DI-BAWAH-16-JAM_RESULTS: "${{steps.lembur-di-bawah-16-jam.outputs.result}}"
+        LEMBUR-PAS-16-JAM_RESULTS: "${{steps.lembur-pas-16-jam.outputs.result}}"
+        LEMBUR-DI-ATAS-16-JAM_RESULTS: "${{steps.lembur-di-atas-16-jam.outputs.result}}"
+        BELIAU_RESULTS: "${{steps.beliau.outputs.result}}"
+      with:
+        runners: lembur-di-bawah-16-jam,lembur-pas-16-jam,lembur-di-atas-16-jam,beliau
