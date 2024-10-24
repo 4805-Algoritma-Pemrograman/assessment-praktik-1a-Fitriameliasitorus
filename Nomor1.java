@@ -1,4 +1,4 @@
- import java.util.Scanner;
+import java.util.Scanner;
 
 public class honorLembur {
     public static void main(String[] args) {
@@ -29,3 +29,4 @@ public class honorLembur {
         scanner.close();
 }
 }
+
